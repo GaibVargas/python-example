@@ -56,9 +56,12 @@ migrate-head:
 	uv run alembic upgrade head
 
 # Dev run
-.PHONY: dev
-dev:
+.PHONY: server-dev scraping-dev
+server-dev:
 	uv run uvicorn app.main:app --reload
+	
+scraping-dev:
+	uv run src/tasks/scraping_cron.py
 
 # Evita erro "Sem regra para processar o alvo"
 %:

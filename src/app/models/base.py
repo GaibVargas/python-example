@@ -6,5 +6,6 @@ class Base(DeclarativeBase):
 
     pass
 
+
 # Necessário para alembic funcionar corretamente
 from . import user_model  # noqa: E402, F401
