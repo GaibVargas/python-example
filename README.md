@@ -21,6 +21,11 @@ Se precisar instalar a versão correta do Python:
 uv python install
 ```
 
+Rode as migrations existentes:
+```bash
+make migrate-head
+```
+
 ## Como rodar o projeto
 
 Execute o script principal:
@@ -44,11 +49,27 @@ Antes de subir alterações, garanta que o código está formatado e segue os pa
 make check-all
 ```
 
-## Contribuição
+## Mudanças no BD
 
-Veja as ferramentas auxiliares e comandos disponíveis no Makefile.
+Mudanças no esquema do banco de dados PostgreSQL, através de atualizações dos models, devem gerar novas migrations e atualizar o estado de migrations do alembic. Para isso rode:
+
+```bash
+make migrate "nome da migration"
+make migrate-head
+```
+
+Não se esqueça de revisar a migration criada em alembic/versions
 
 ## Links úteis
 
 - [Documentação do uv](https://docs.astral.sh/uv/)
 - [Documentação do Python](https://docs.python.org/pt-br/3/)
+- [Documentação do make](https://www.gnu.org/software/make/manual/)
+- [Tutorial de Makefile](https://makefiletutorial.com/)
+
+## Troubleshooting
+Você pode enfrentar alguns erros relacionados a instalação do driver para PostgreSQL psicopg2. Caso seja um erro de compilação da biblioteca use o comando abaixo:
+```bash
+sudo apt update
+sudo apt install -y libpq-dev gcc python3-dev
+```

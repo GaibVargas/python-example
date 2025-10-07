@@ -31,7 +31,7 @@ import: import-fix
 # Type
 .PHONY: type-check
 type-check:
-	uv run mypy
+	uv run mypy src
 
 .PHONY: check-all
 check-all: import format lint type-check
@@ -40,3 +40,26 @@ check-all: import format lint type-check
 .PHONY: test
 test:
 	uv run python -m unittest discover -s tests
+
+# Migrations
+.PHONY: migrate migrate-head
+migrate:
+	@if [ -z "$(filter-out $@,$(MAKECMDGOALS))" ]; then \
+		echo "Uso: make automigrate 'nome da migration'"; \
+	else \
+		name="$(filter-out $@,$(MAKECMDGOALS))"; \
+		timestamp=$$(date +'%Y%m%d%H%M%S'); \
+		uv run alembic revision --autogenerate -m "$${timestamp}_$${name}"; \
+	fi
+
+migrate-head:
+	uv run alembic upgrade head
+
+# Dev run
+.PHONY: dev
+dev:
+	uv run uvicorn app.main:app --reload
+
+# Evita erro "Sem regra para processar o alvo"
+%:
+	@:
