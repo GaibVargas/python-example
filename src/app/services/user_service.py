@@ -1,16 +1,14 @@
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.dtos.user_dtos import UserCreate, UserUpdate
 from app.models.user_model import User
 from app.repositories.user_repository import UserRepository
 
 
 class UserService:
-    def __init__(self, db: AsyncSession) -> None:
-        self.repo = UserRepository(db)
+    def __init__(self, repo: UserRepository) -> None:
+        self.repo = repo
 
     async def create_user(self, payload: UserCreate) -> User:
-        existing = self.repo.get_by_cpf(payload.cpf)
+        existing = await self.repo.get_by_cpf(payload.cpf)
         if existing:
             raise ValueError("User with this CPF already exists")
         return await self.repo.create(payload)

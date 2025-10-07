@@ -8,6 +8,7 @@ class Settings(BaseSettings):
         "development", description="Ambiente de execução (dev/prod/test)"
     )
     debug: bool = Field(True, description="Modo debug habilitado ou não")
+    log_level: str = Field("info", description="Nível de log da aplicação")
 
     postgres_user: str = Field(..., description="Usuário do banco de dados")
     postgres_password: str = Field(..., description="Senha do banco de dados")
