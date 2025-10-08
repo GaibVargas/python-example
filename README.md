@@ -28,10 +28,15 @@ make migrate-head
 
 ## Como rodar o projeto
 
-Execute o script principal:
+Para executar o servidor http use:
 
 ```bash
-uv run start
+make server-dev
+```
+
+Para executar a tarefa de periódica de scraping use:
+```bash
+make scraping-dev
 ```
 
 ## Rodando os testes
