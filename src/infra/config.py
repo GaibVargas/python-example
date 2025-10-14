@@ -1,14 +1,27 @@
+from enum import Enum
 from pydantic import Field, ValidationError
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+class LogLevel(str, Enum):
+    debug = "debug"
+    info = "info"
+    warning = "warning"
+    error = "error"
+    exception = "exception"
+
+class Enviroment(str, Enum):
+    development = "development"
+    production = "production"
+    test = "test"
+
 class Settings(BaseSettings):
     app_name: str = Field("FastAPI App", description="Nome da aplicação")
-    environment: str = Field(
-        "development", description="Ambiente de execução (dev/prod/test)"
+    environment: Enviroment = Field(
+        Enviroment.development, description="Ambiente de execução"
     )
     debug: bool = Field(True, description="Modo debug habilitado ou não")
-    log_level: str = Field("info", description="Nível de log da aplicação")
+    log_level: LogLevel = Field(LogLevel.info, description="Nível de log da aplicação")
 
     postgres_user: str = Field(..., description="Usuário do banco de dados")
     postgres_password: str = Field(..., description="Senha do banco de dados")
@@ -37,10 +50,13 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
     )
 
+# Existe somente para que load_settings faça a inferência correta do tipo
+def _load_settings() -> Settings:
+    return Settings()
 
 def load_settings() -> Settings:
     try:
-        return Settings()
+        return _load_settings()
     except ValidationError as e:
         print("\nErro ao carregar variáveis de ambiente:\n")
         for error in e.errors():

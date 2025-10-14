@@ -4,7 +4,9 @@ from app.dependencies.user_dependencies import get_user_service
 from app.dtos.user_dtos import UserCreate, UserRead, UserUpdate
 from app.models.user_model import User
 from app.services.user_service import UserService
+from infra.logger.logger_manager import LoggingManager
 
+logger = LoggingManager.get_logger(__name__)
 router = APIRouter(prefix="/users", tags=["users"])
 
 
@@ -20,6 +22,7 @@ async def create_user(
 
 @router.get("/{cpf}", response_model=UserRead)
 async def get_user(cpf: str, svc: UserService = Depends(get_user_service)) -> User:
+    logger.info(f"Fetching user with CPF: {cpf}")
     user = await svc.get_user(cpf)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")

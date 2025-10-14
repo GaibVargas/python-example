@@ -6,6 +6,7 @@ Este é um projeto de exemplo para organização de projetos Python utilizando o
 
 - [uv](https://docs.astral.sh/uv/)
 - [make](https://www.gnu.org/software/make/)
+- [docker](https://www.docker.com/)
 
 ## Instalação
 
@@ -21,12 +22,16 @@ Se precisar instalar a versão correta do Python:
 uv python install
 ```
 
-Rode as migrations existentes:
+## Como rodar o projeto
+Primeiro suba a infraestrutura do projeto com:
+```bash
+docker compose up -d
+```
+
+Se for a primeira vez rodando o projeto, ou houve alteração no banco de dados atualize os schemas rodando as migrations existentes:
 ```bash
 make migrate-head
 ```
-
-## Como rodar o projeto
 
 Para executar o servidor http use:
 
