@@ -7,6 +7,7 @@ from infra.logger.logger_manager import LoggingManager
 
 logger = LoggingManager.get_logger(__name__)
 
+
 def main() -> None:
     site1 = SiteAScraper("http://example.com/a")
     site2 = SiteBScraper("http://example.com/b")

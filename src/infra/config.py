@@ -1,4 +1,5 @@
 from enum import Enum
+
 from pydantic import Field, ValidationError
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -10,10 +11,12 @@ class LogLevel(str, Enum):
     error = "error"
     exception = "exception"
 
+
 class Enviroment(str, Enum):
     development = "development"
     production = "production"
     test = "test"
+
 
 class Settings(BaseSettings):
     app_name: str = Field("FastAPI App", description="Nome da aplicação")
@@ -50,9 +53,11 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
     )
 
+
 # Existe somente para que load_settings faça a inferência correta do tipo
 def _load_settings() -> Settings:
     return Settings()
+
 
 def load_settings() -> Settings:
     try:

@@ -2,11 +2,11 @@ import atexit
 import json
 import logging
 import logging.config
+from logging.handlers import QueueHandler, QueueListener
+from pathlib import Path
 from queue import Queue
 from threading import Lock
-from pathlib import Path
 from typing import Any
-from logging.handlers import QueueHandler, QueueListener
 
 from infra.config import settings
 
@@ -78,5 +78,5 @@ class LoggingManager:
     @classmethod
     def shutdown(cls) -> None:
         if cls._queue_listener:
-            cls._queue_listener.stop() # Faz flush dos logs pendentes
+            cls._queue_listener.stop()  # Faz flush dos logs pendentes
         logging.shutdown()
