@@ -3,13 +3,7 @@ from enum import Enum
 from pydantic import Field, ValidationError
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-
-class LogLevel(str, Enum):
-    debug = "debug"
-    info = "info"
-    warning = "warning"
-    error = "error"
-    exception = "exception"
+from infra.logger.logger_level import LogLevel
 
 
 class Enviroment(str, Enum):
