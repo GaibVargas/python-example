@@ -14,6 +14,8 @@ class Enviroment(str, Enum):
 
 class Settings(BaseSettings):
     app_name: str = Field("FastAPI App", description="Nome da aplicação")
+    app_host: str = Field(..., description="Host da aplicação")
+    app_port: int = Field(8000, description="Porta da aplicação")
     environment: Enviroment = Field(
         Enviroment.development, description="Ambiente de execução"
     )
@@ -22,7 +24,7 @@ class Settings(BaseSettings):
 
     postgres_user: str = Field(..., description="Usuário do banco de dados")
     postgres_password: str = Field(..., description="Senha do banco de dados")
-    postgres_host: str = Field("localhost", description="Host do banco de dados")
+    postgres_host: str = Field(..., description="Host do banco de dados")
     postgres_port: int = Field(5432, description="Porta do banco de dados")
     postgres_db: str = Field(..., description="Nome do banco de dados")
 

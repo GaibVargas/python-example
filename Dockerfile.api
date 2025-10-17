@@ -1,0 +1,46 @@
+FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim AS build
+
+WORKDIR /app
+
+ENV UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy
+
+# instalar dependências de build
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential libpq-dev gcc\
+    && rm -rf /var/lib/apt/lists/*
+
+COPY pyproject.toml uv.lock* ./
+
+# Instalar dependências (sem instalar o projeto)
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --no-install-project --no-dev
+
+COPY . .
+
+# Instalar o projeto (de acordo com o lockfile)
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev
+
+FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim AS runtime
+
+# instalar dependências do psycopg2
+RUN apt-get update && apt-get install -y --no-install-recommends libpq5 \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN groupadd --system --gid 999 nonroot \
+    && useradd --system --gid 999 --uid 999 --create-home nonroot
+
+COPY --from=build --chown=nonroot:nonroot /app /app
+
+RUN chmod +x /app/shell-scripts/*
+
+ENV PATH="/app/.venv/bin:$PATH"
+
+USER nonroot
+
+WORKDIR /app
+
+EXPOSE 8000
+
+CMD ["/app/shell-scripts/entrypoint.sh"]
