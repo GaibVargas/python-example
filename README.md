@@ -25,30 +25,31 @@ uv python install
 ## Como rodar o projeto
 Primeiro suba a infraestrutura do projeto com:
 ```bash
-docker compose up -d
+make start
 ```
 
 Se for a primeira vez rodando o projeto, ou houve alteração no banco de dados atualize os schemas rodando as migrations existentes:
 ```bash
-make migrate-head
+make migrate_head
 ```
 
 Para executar o servidor http use:
 
 ```bash
-make server-dev
+make run
 ```
 
 Para executar a tarefa de periódica de scraping use:
 ```bash
-make scraping-dev
+make run_scraping
 ```
 
 ## Rodando os testes
 
 Execute todos os testes com:
 ```bash
-make test
+make test_unit
+make test_integration
 ```
 
 ## Padronização e qualidade de código
@@ -56,7 +57,7 @@ make test
 Antes de subir alterações, garanta que o código está formatado e segue os padrões:
 
 ```bash
-make check-all
+make fix_all
 ```
 
 ## Mudanças no BD
@@ -65,10 +66,14 @@ Mudanças no esquema do banco de dados PostgreSQL, através de atualizações do
 
 ```bash
 make migrate "nome da migration"
-make migrate-head
+make migrate_head
 ```
 
 Não se esqueça de revisar a migration criada em alembic/versions
+
+## Produção
+
+Para colocar o serviço em ambiente de produção utilize os arquivos Dockerfile.api e Dockerfile.scraping. Para manter a consistência do banco de dados somente a imagem Dockerfile.api executa as migrations do projeto. Lembre-se de alterar as variáveis de ambiente indicadas no arquivo .env.example.
 
 ## Links úteis
 

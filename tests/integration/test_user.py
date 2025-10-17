@@ -1,5 +1,6 @@
 import unittest
 from unittest.mock import AsyncMock, MagicMock
+
 from app.dtos.user_dtos import UserCreate
 from app.models.user_model import User
 from app.services.user_service import UserService
@@ -28,7 +29,9 @@ class TestUserService(unittest.IsolatedAsyncioTestCase):
     async def test_create_user_already_exists(self):
         """Deve lançar ValueError quando CPF já existir."""
         payload = UserCreate(cpf="12345678900", full_name="Bob")
-        self.mock_repo.get_by_cpf.return_value = User(id=1, cpf=payload.cpf, full_name=payload.full_name)
+        self.mock_repo.get_by_cpf.return_value = User(
+            id=1, cpf=payload.cpf, full_name=payload.full_name
+        )
 
         with self.assertRaises(ValueError) as ctx:
             await self.service.create_user(payload)
