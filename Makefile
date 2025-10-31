@@ -107,7 +107,7 @@ db_verify:
 run:
 	@make db_verify
 	@echo ">>> ☕  Iniciando aplicação FastAPI..."
-	@uv run uvicorn app.main:app --reload
+	@uv run uvicorn app.main:app --reload --log-config src/infra/logger/logger_config.json --no-use-colors
 
 # Inicia o cron de scraping localmente
 run_scraping:

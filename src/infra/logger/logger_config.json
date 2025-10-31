@@ -16,8 +16,32 @@
             "stream": "ext://sys.stdout"
         }
     },
+    "loggers": {
+        "uvicorn": {
+            "handlers": [],
+            "level": "INFO",
+            "propagate": true
+        },
+        "fastapi": {
+            "handlers": [],
+            "level": "INFO",
+            "propagate": true
+        },
+        "sqlalchemy": {
+            "handlers": [],
+            "level": "WARNING",
+            "propagate": true
+        },
+        "apscheduler": {
+            "handlers": [],
+            "level": "WARNING",
+            "propagate": true
+        }
+    },
     "root": {
         "level": "DEBUG",
-        "handlers": ["stdout"]
+        "handlers": [
+            "stdout"
+        ]
     }
 }

@@ -45,8 +45,6 @@ class LoggingManager:
 
             config = cls._load_config()
             config["root"]["level"] = log_level
-            for handler in config.get("handlers", {}).values():
-                handler["level"] = log_level
 
             logging.config.dictConfig(config)
 
@@ -55,6 +53,7 @@ class LoggingManager:
 
             root_logger = logging.getLogger()
             root_logger.handlers = [queue_handler]
+            root_logger.propagate = False
 
             console_handler = logging.getHandlerByName("stdout")
             if console_handler is None:
@@ -65,6 +64,7 @@ class LoggingManager:
 
             cls._queue_listener = QueueListener(log_queue, console_handler)
             cls._queue_listener.start()
+
             atexit.register(cls.shutdown)
 
             cls._configured = True
