@@ -50,6 +50,7 @@ class LoggingManager:
 
             log_queue: Queue[logging.LogRecord] = Queue(-1)
             queue_handler = QueueHandler(log_queue)
+            queue_handler.setLevel(log_level)
 
             root_logger = logging.getLogger()
             root_logger.handlers = [queue_handler]
